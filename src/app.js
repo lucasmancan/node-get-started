@@ -5,13 +5,7 @@ const bodyParser = require('body-parser');
 const indexRoutes = require('./routes/index-routes');
 const userRoutes = require('./routes/user-routes');
 
-const connStr = "Server=grupopll.database.windows.net;Database=api-db;User Id=soft360;Password=App360soft;encrypt=true";
-const sql = require("mssql");
 
-// fazendo a conexão global
-sql.connect(connStr)
-   .then(conn => global.conn = conn)
-   .catch(err => console.log(err));
 
 const app = express();
 

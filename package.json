@@ -16,6 +16,7 @@
     "http": "0.0.0",
     "mssql": "^4.3.0",
     "sequelize": "^4.42.0",
+    "sequelize-cli": "^5.4.0",
     "tedious": "^4.1.3"
   }
 }

@@ -2,7 +2,7 @@ const app = require('../src/app');
 const http = require('http');
 const debug = require('debug')('node-api:server');
 var sql = require("mssql");
-
+var models = require('../src/models');
 
 
 const port = normalizePort(process.env.PORT || '3000');
@@ -11,9 +11,13 @@ app.set('port', port);
 
 const server = http.createServer(app);
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+models.sequelize.sync().then(function() {
+  server.listen(port, function() {
+    debug('Server is listening at ' + server.address().port);
+  });
+  server.on('error', onError);
+  server.on('listening', onListening);
+});
 
 function normalizePort(val){
     return (!isNaN(parseInt(val,10)) && parseInt(val,10) >= 0) ? parseInt(val,10) : val;

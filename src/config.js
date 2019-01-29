@@ -1,19 +1,18 @@
-
-// const Sequelize = require('sequelize');
-// const sequelize = new Sequelize('api-db', 'soft360', 'App360soft', {
-//   host: 'grupopll.database.windows.net',
-//   dialect: 'mssql',
-//   dialectOptions: {
-//     encrypt: true
-//   }
-// });
-  
-// sequelize.authenticate()
-// .then(() => {
-//   console.log('Connection has been established successfully.');
-// })
-// .catch(err => {
-//   console.error('Unable to connect to the database:', err);
-// });
-
-// module.exports = sequelize;
+module.exports = {
+    development: {
+      dialect: "sqlite",
+      storage: "./db.development.sqlite"
+    },
+    test: {
+      dialect: "sqlite",
+      storage: ":memory:"
+    },
+    production: {
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      host: process.env.DB_HOSTNAME,
+      dialect: 'mssql',
+      use_env_variable: 'grupopll.database.windows.net'
+    }
+  };
