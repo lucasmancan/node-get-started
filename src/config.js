@@ -1,11 +1,13 @@
 module.exports = {
     development: {
-      dialect: "sqlite",
-      storage: "./db.development.sqlite"
-    },
-    test: {
-      dialect: "sqlite",
-      storage: ":memory:"
+      username: 'Soft360',
+      password: 'App360soft',
+      database: 'api-db',
+      host: 'grupopll.database.windows.net',
+      dialect: 'mssql',
+      dialectOptions: {
+            encrypt: true
+          }
     },
     production: {
       username: process.env.DB_USERNAME,
@@ -13,6 +15,9 @@ module.exports = {
       database: process.env.DB_NAME,
       host: process.env.DB_HOSTNAME,
       dialect: 'mssql',
-      use_env_variable: 'grupopll.database.windows.net'
+      dialectOptions: {
+            encrypt: true
+          },
+      use_env_variable: true
     }
   };

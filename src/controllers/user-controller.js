@@ -1,33 +1,57 @@
 'use strict';
-var User  = require('../models').User;
-var Profile  = require('../models').Profile;
-var Email  = require('../models').Email;
-var Phones  = require('../models').Phones;
+var models = require('../models');
 
-
+console.log("MODELSSSS",models);
 exports.get =  (req,res, next) => {
-    User.findAll({
-        include: [ Profile ]
-      }).then(function(users) {
-        res.render('index', {
-          title: 'Sequelize: Express Example',
-          users: users
-        });
-      
+  console.log(models.User);
+  models.users.findAll({
+    include: [
+      { model: models.profiles, required: true},
+      { model: models.emails, required: false},
+      { model: models.phones, required: false}
+        ]
+  }
+  ).then(function(users) {
+    res.send({
+      success: true,
+      message: '',
+      data: users
+    });
+})};
+
+exports.getById =  (req,res, next) => {
+  models.users.findById(req.params.id, {
+    include: [ models.profiles ],
+    include: [ models.emails ],
+    include: [ models.phones ]
+  }).then(function(users) {
+    res.send({
+      success: true,
+      message: '',
+      data: users
+    });
 })};
 
 exports.post =  (req,res, next) => {
-    User.create({
-        firstName: req.body.firstName
-      }).then(function() {
+  models.users.create({
+
+  }).then(function() {
         res.redirect('/');
       });
 };
 
 exports.put =  (req,res, next) => {
- 
+  User.update( req.body, 
+				 { where: {id: customerId} }
+			   ).then(() => {
+				 res.status(200).send("updated successfully a customer with id = " + id);
+			   });
 };
 
 exports.delete =  (req,res, next) => {
-
+  models.users.destroy({
+    where: { id: req.params.id }
+  }).then(() => {
+    res.status(200).send('deleted successfully a user with id = ' + id);
+  });
 };
