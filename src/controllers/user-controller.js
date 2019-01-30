@@ -1,7 +1,6 @@
 'use strict';
 var models = require('../models');
 
-console.log("MODELSSSS",models);
 exports.get =  (req,res, next) => {
   console.log(models.User);
   models.users.findAll({
@@ -20,11 +19,15 @@ exports.get =  (req,res, next) => {
 })};
 
 exports.getById =  (req,res, next) => {
-  models.users.findById(req.params.id, {
-    include: [ models.profiles ],
-    include: [ models.emails ],
-    include: [ models.phones ]
-  }).then(function(users) {
+  console.log(models.User);
+  models.users.findById(req.params.id,{
+    include: [
+      { model: models.profiles, required: true},
+      { model: models.emails, required: false},
+      { model: models.phones, required: false}
+        ]
+  }
+  ).then(function(users) {
     res.send({
       success: true,
       message: '',
