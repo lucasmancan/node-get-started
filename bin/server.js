@@ -4,7 +4,7 @@ const debug = require('debug')('node-api:server');
 var sql = require("mssql");
 var models = require('../src/models');
 
-
+global.PASSWORD_KEY = 'APITESTE2019'
 const port = normalizePort(process.env.PORT || '3000');
 
 
