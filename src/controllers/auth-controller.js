@@ -4,7 +4,6 @@ const md5 = require('md5');
 const jwt = require('jsonwebtoken');
 
 exports.post = ((req, res, next) => {
-    console.log("App Key Auth Controller: ", global.API_KEY);
 
     models.users.findOne({
         where: {

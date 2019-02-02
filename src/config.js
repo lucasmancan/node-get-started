@@ -1,3 +1,5 @@
+global.API_KEY = 'L!t(kg"6&<mAl@[u,9I{n?fFg-cBB:/X$@Dy9Mg|AQ&AV:(itx?XCAe>A#v/;|_';
+
 module.exports = {
     development: {
       username: 'Soft360',
