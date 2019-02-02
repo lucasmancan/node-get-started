@@ -4,13 +4,12 @@ const debug = require('debug')('node-api:server');
 var sql = require("mssql");
 var models = require('../src/models');
 
-global.PASSWORD_KEY = 'APITESTE2019'
 const port = normalizePort(process.env.PORT || '3000');
 
-
+console.log("API Key: ", global.API_KEY);
 const server = http.createServer(app);
 
-models.sequelize.sync({force:true}).then(function() {
+models.sequelize.sync().then(function() {
   server.listen(port, function() {
     debug('Server is listening at ' + server.address().port);
   });

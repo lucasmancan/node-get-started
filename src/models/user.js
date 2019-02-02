@@ -6,6 +6,11 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             autoIncrement: true
         },
+        username: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            unique: true,
+        },
         firstName: {
             field: 'first_name',
             type: Sequelize.STRING,
@@ -29,7 +34,8 @@ module.exports = (sequelize, Sequelize) => {
                 not: ["[a-z]", 'i']
             },
             allowNull: true
-        }, password: {
+        },
+        password: {
             type: Sequelize.STRING(255),
             allowNull: true
         },
@@ -39,7 +45,7 @@ module.exports = (sequelize, Sequelize) => {
                 isDate: true
             },
             type: Sequelize.DATE,
-            allowNull : false
+            allowNull: false
         },
         gender: {
             type: Sequelize.ENUM('M', 'F'),
@@ -60,7 +66,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DATE,
             defaultValue: Sequelize.NOW
         },
-        
+
         updatedAt: {
             field: 'updated_at',
             type: Sequelize.DATE,
