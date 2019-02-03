@@ -21,6 +21,9 @@ exports.sendEmail = async(email) => {
     }
   });
 
+  console.log("FROM ",config.credentials.email);
+  console.log("PASS",config.credentials.password);
+  console.log("TO ",email);
   // setup email data with unicode symbols
   let mailOptions = {
     from: config.credentials.email, // sender address

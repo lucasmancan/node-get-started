@@ -96,6 +96,7 @@ exports.post = async (req, res, next) => {
       active: true
     })
 
+
     if (req.body.profile) {
       User.profile = req.body.profile
     }
@@ -113,13 +114,17 @@ exports.post = async (req, res, next) => {
          models.addresses.create(element);
       })
     }
-  });
+
+    email.sendEmail(User.email);
 
     return res.status(201).send({
       success: false,
       message: 'User created!',
       data: null
     });
+  });
+
+
   } catch (error) {
 
     console.error(error);
