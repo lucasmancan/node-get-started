@@ -6,10 +6,9 @@ var models = require('../src/models');
 
 const port = normalizePort(process.env.PORT || '3000');
 
-console.log("API Key: ", global.API_KEY);
 const server = http.createServer(app);
 
-models.sequelize.sync().then(function() {
+models.sequelize.sync({force:false}).then(function() {
   server.listen(port, function() {
     debug('Server is listening at ' + server.address().port);
   });

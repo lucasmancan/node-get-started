@@ -1,17 +1,24 @@
 'use strict';
 const models = require('../models');
 const md5 = require('md5');
-const auth = require('../middlewares/auth');
-
+const repository = require('../repositorys/user-repository');
+const email = require('../mail')
 exports.get = (req, res, next) => {
   models.users.findAll({
     include: [{
         model: models.profiles,
         required: true
-      },
-      {
-        model: models.emails,
-        required: false
+      }, {
+        model: models.addresses,
+        required: false,
+        include: {
+          model: models.states,
+          required: true,
+          include: {
+            model: models.countrys,
+            required: true
+          }
+        }
       },
       {
         model: models.phones,
@@ -28,20 +35,25 @@ exports.get = (req, res, next) => {
 };
 
 exports.getById = (req, res, next) => {
-  models.users.findById(req.params.id,{
+  models.users.findById(req.params.id, {
     include: [{
-        model: models.profiles,
-        required: true
-      },
-      {
-        model: models.emails,
-        required: false
-      },
-      {
-        model: models.phones,
-        required: false
+      model: models.profiles,
+      required: true
+    }, {
+      model: models.addresses,
+      required: false,
+      include: {
+        model: models.states,
+        required: true,
+        include: {
+          model: models.countrys,
+          required: true
+        }
       }
-    ]
+    }, {
+      model: models.phones,
+      required: false
+    }]
   }).then(function (users) {
     res.send({
       success: true,
@@ -53,53 +65,112 @@ exports.getById = (req, res, next) => {
 
 
 
-exports.post = (req, res, next) => {
-  models.users.create({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    cpf: req.body.cpf,
-    cnpj: req.body.cnpj,
-    password: md5(req.body.password + global.API_KEY),
-    birthDate: req.body.birthDate,
-    gender: req.body.gender,
-    emails: [req.body.emails],
-    phones: [req.body.phones],
-    active: false,
-  }, {
-    include: [{
-      association: models.emails,
-      as: 'emails'
-    }]
-  }, {
-    include: [{
-      association: models.phones,
-      as: 'phones'
-    }]
-  }).then(function () {
-    res.redirect('/users');
+exports.post = async (req, res, next) => {
+  let User;
+  try {
+     await models.sequelize.transaction( async (t) => {
+
+     User = await models.users.findOne({
+      where: {
+        email: req.body.email
+      }
+    });
+
+    if (User) {
+      return res.status(200).send({
+        success: false,
+        message: 'User already exists!',
+        data: null
+      });
+    }
+
+     User = await models.users.create({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      age: req.body.age,
+      bio: req.body.bio,
+      password: md5(req.body.password + global.API_KEY),
+      birthDate: req.body.birthDate,
+      gender: req.body.gender,
+      active: true
+    })
+
+    if (req.body.profile) {
+      User.profile = req.body.profile
+    }
+
+    if (req.body.phones.length > 0) {
+      req.body.phones.forEach(element => {
+        element.user = User;
+         models.phones.create(element);
+      })
+    }
+
+    if (req.body.addresses.length > 0) {
+      req.body.addresses.forEach(element => {
+        element.user = User;
+         models.addresses.create(element);
+      })
+    }
   });
+
+    return res.status(201).send({
+      success: false,
+      message: 'User created!',
+      data: null
+    });
+  } catch (error) {
+
+    console.error(error);
+    return res.status(500).send({
+      success: false,
+      message: 'Oops.. An Error ocurred!',
+      data: null
+    })
+  }
+
 };
 
-exports.put = (req, res, next) => {
-  User.update(req.body, {
-    include: [models.profiles],
-    include: [models.emails],
-    include: [models.phones]
-  }, {
-    where: {
-      id: customerId
-    }
-  }).then(() => {
-    res.status(200).send("updated successfully a customer with id = " + id);
-  });
-};
+exports.put = async (req, res, next) => {
+  try {
 
-exports.delete = (req, res, next) => {
-  models.users.destroy({
-    where: {
-      id: req.params.id
-    }
-  }).then(() => {
-    res.status(200).send('deleted successfully a user with id = ' + id);
-  });
+    await repository.update(req.body, req.params.id)
+
+    return res.status(200).send({
+      success: false,
+      message: 'User updated!',
+      data: null
+    });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: 'Oops.. An Error ocurred!',
+      data: null
+    })
+  }
+}
+
+exports.delete = async (req, res, next) => {
+  try {
+    await models.users.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+
+    return res.status(200).send({
+      success: false,
+      message: 'User deleted!',
+      data: null
+    });
+  } catch (error) {
+    return res.status(500).send({
+      success: false,
+      message: 'Oops.. An Error ocurred!',
+      data: null
+    })
+  }
 };

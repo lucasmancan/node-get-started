@@ -2,12 +2,14 @@
 const models = require('../models');
 const md5 = require('md5');
 const jwt = require('jsonwebtoken');
+//GLOBAL API_KEY NEEDS TO BE CREATED
+
 
 exports.post = ((req, res, next) => {
 
     models.users.findOne({
         where: {
-            username: req.body.username,
+            email: req.body.email,
             password: req.body.password
         }
     }).then((user) => {
@@ -17,7 +19,7 @@ exports.post = ((req, res, next) => {
             const token = jwt.sign({
                 id
             }, global.API_KEY, {
-                expiresIn: 1800 // expires in 5min
+              //  expiresIn: 1800 // expires in 5min
             });
 
             res.status(200).send({
@@ -27,7 +29,7 @@ exports.post = ((req, res, next) => {
             });
         } else {
 
-            res.status(500).send({
+            res.status(404).send({
                 success: false,
                 message: 'Username or password may be incorrect!',
                 data: null

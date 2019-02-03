@@ -38,7 +38,11 @@ exports.getAllByIdUser = (req, res, next) => {
 exports.post = (req, res, next) => {
   models.phones.create(req.body)
     .then(function () {
-      res.redirect('/phones');
+      res.send({
+        success: true,
+        message: 'E-mail created',
+        data: null
+      });
     })
 };
 

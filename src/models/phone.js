@@ -9,10 +9,9 @@ module.exports = (sequelize, Sequelize) => {
     phone: {
       type: Sequelize.STRING(20),
       allowNull: false,
-        validate: {
-        is: /^(?:(55\d{2})|\d{2})[6-9]\d{8}$/i,
+      validate: {
         notEmpty: true
-    },
+      },
     },
     ddd: {
       type: Sequelize.STRING(4),
@@ -26,19 +25,19 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.BOOLEAN
     },
     createdAt: {
-        field: 'created_at',
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+      field: 'created_at',
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW
     },
-    
+
     updatedAt: {
-        field: 'updated_at',
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+      field: 'updated_at',
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW
     },
   }, {
     timestamps: false,
-     underscored: true,
+    underscored: true,
     freezeTableName: true,
     tableName: 'phones',
 

@@ -6,11 +6,6 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             autoIncrement: true
         },
-        username: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true,
-        },
         firstName: {
             field: 'first_name',
             type: Sequelize.STRING,
@@ -21,18 +16,13 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         },
-        cpf: {
-            type: Sequelize.STRING(11),
-            validate: {
-                not: ["[a-z]", 'i']
-            },
+        bio: {
+            field: 'bio',
+            type: Sequelize.STRING,
             allowNull: true
         },
-        cnpj: {
-            type: Sequelize.STRING(20),
-            validate: {
-                not: ["[a-z]", 'i']
-            },
+        age: {
+            type: Sequelize.INTEGER,
             allowNull: true
         },
         password: {
@@ -45,6 +35,14 @@ module.exports = (sequelize, Sequelize) => {
                 isDate: true
             },
             type: Sequelize.DATE,
+            allowNull: false
+        },
+        email: {
+            type: Sequelize.STRING(40),
+            validate: {
+                isEmail: true,
+                notEmpty: true
+            },
             allowNull: false
         },
         gender: {
@@ -66,7 +64,6 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DATE,
             defaultValue: Sequelize.NOW
         },
-
         updatedAt: {
             field: 'updated_at',
             type: Sequelize.DATE,
@@ -80,8 +77,8 @@ module.exports = (sequelize, Sequelize) => {
     });
 
     User.associate = function (models) {
-        User.hasMany(models.emails);
         User.hasMany(models.phones);
+        User.hasMany(models.addresses);
         User.belongsTo(models.profiles);
     };
 

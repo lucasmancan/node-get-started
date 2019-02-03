@@ -42,7 +42,6 @@ fs
     db[model.name] = model;
   });
 
-  console.log("Before Executing Method! ");
 
 Object.keys(db).forEach(modelName => {
   console.log("Model Name: ",modelName, modelName.associate);
