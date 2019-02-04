@@ -3,72 +3,62 @@ const models = require('../models');
 const md5 = require('md5');
 
 exports.get = (req, res, next) => {
-  models.phones.findAll()
-    .then(function (phones) {
+  models.countries.findAll()
+    .then(function (countries) {
       res.send({
         success: true,
         message: '',
-        data: phones
+        data: countries
       });
     })
 };
 
 exports.getById = (req, res, next) => {
-  models.phones.findById(req.params.id)
-    .then(function (phones) {
+  return models.countries.findById(req.params.id)
+    .then(function (countries) {
       res.send({
         success: true,
         message: '',
-        data: phones
+        data: countries
       });
     })
 };
 
-exports.getAllByIdUser = (req, res, next) => {
-    models.phones.findAll({where :{ user_id: req.params.userId}})
-      .then(function (phones) {
-        res.send({
-          success: true,
-          message: '',
-          data: phones
-        });
-      })
-  };
 
 exports.post = (req, res, next) => {
-  models.phones.create(req.body)
+  models.countries.create(req.body)
     .then(function () {
       res.send({
         success: true,
-        message: 'E-mail created',
+        message: 'Country created',
         data: null
       });
     })
 };
 
 exports.put = (req, res, next) => {
-  models.phones.update(req.body, {
+  models.countries.update(req.body, {
     where: {
-      id: req.body.id
+        id: req.body.id
     }
   }).then(() => {
     res.status(200).send({
       success: true,
-      message: 'Phone updated!',
+      message: 'Country updated!',
       data: null
     });
   });
 };
 
 exports.delete = (req, res, next) => {
-  models.phones.destroy({
+  models.countries.destroy({
     where: {
       id: req.params.id
     }
   }).then(() => {
     res.status(200).send({
       success: true,
-      message: 'Phone deleted!',
+      message: 'Country deleted!',
       data: null
     });
   });

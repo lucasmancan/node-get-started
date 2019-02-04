@@ -30,7 +30,7 @@ module.exports = (sequelize, Sequelize) => {
     })
 
     State.associate = function (models) {
-        State.belongsTo(models.countrys);
+        State.belongsTo(models.countries);
     };
   
     return State;

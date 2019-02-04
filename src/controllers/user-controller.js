@@ -140,7 +140,7 @@ exports.post = async (req, res, next) => {
 exports.put = async (req, res, next) => {
   try {
 
-    await repository.update(req.body, req.params.id)
+    await repository.update(req.body)
 
     return res.status(200).send({
       success: false,

@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
 
-    const Country = sequelize.define('countrys', {
+    const Country = sequelize.define('countries', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -25,7 +25,7 @@ module.exports = (sequelize, Sequelize) => {
       timestamps: false,
        underscored: true,
       freezeTableName: true,
-      tableName: 'countrys',
+      tableName: 'countries',
   
     })
   

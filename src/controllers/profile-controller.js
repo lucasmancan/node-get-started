@@ -34,7 +34,7 @@ exports.post = (req, res, next) => {
 exports.put = (req, res, next) => {
   models.profiles.update(req.body, {
     where: {
-      id: req.params.id
+      id: req.body.id
     }
   }).then(() => {
     res.status(200).send({

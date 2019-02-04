@@ -10,7 +10,7 @@ exports.post = ((req, res, next) => {
     models.users.findOne({
         where: {
             email: req.body.email,
-            password: req.body.password
+            password: md5(req.body.password + global.API_KEY)
         }
     }).then((user) => {
 

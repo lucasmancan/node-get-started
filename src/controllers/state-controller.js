@@ -3,72 +3,74 @@ const models = require('../models');
 const md5 = require('md5');
 
 exports.get = (req, res, next) => {
-  models.phones.findAll()
-    .then(function (phones) {
+  models.states.findAll()
+    .then(function (states) {
       res.send({
         success: true,
         message: '',
-        data: phones
+        data: states
       });
     })
 };
 
 exports.getById = (req, res, next) => {
-  models.phones.findById(req.params.id)
-    .then(function (phones) {
+  models.states.findById(req.params.id)
+    .then(function (states) {
       res.send({
         success: true,
         message: '',
-        data: phones
+        data: states
       });
     })
 };
 
-exports.getAllByIdUser = (req, res, next) => {
-    models.phones.findAll({where :{ user_id: req.params.userId}})
-      .then(function (phones) {
+exports.getByCountry = (req, res, next) => {
+    models.states.findOne({where: {countries_id: req.params.id}})
+      .then(function (states) {
         res.send({
           success: true,
           message: '',
-          data: phones
+          data: states
         });
       })
   };
+  
+
 
 exports.post = (req, res, next) => {
-  models.phones.create(req.body)
+  models.states.create(req.body)
     .then(function () {
       res.send({
         success: true,
-        message: 'E-mail created',
+        message: 'State created',
         data: null
       });
     })
 };
 
 exports.put = (req, res, next) => {
-  models.phones.update(req.body, {
+  models.states.update(req.body, {
     where: {
       id: req.body.id
     }
   }).then(() => {
     res.status(200).send({
       success: true,
-      message: 'Phone updated!',
+      message: 'State updated!',
       data: null
     });
   });
 };
 
 exports.delete = (req, res, next) => {
-  models.phones.destroy({
+  models.states.destroy({
     where: {
       id: req.params.id
     }
   }).then(() => {
     res.status(200).send({
       success: true,
-      message: 'Phone deleted!',
+      message: 'State deleted!',
       data: null
     });
   });
