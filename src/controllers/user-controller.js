@@ -1,7 +1,7 @@
 'use strict';
 const models = require('../models');
 const md5 = require('md5');
-const repository = require('../repositorys/user-repository');
+const repository = require('../repositories/user-repository');
 const email = require('../mail')
 exports.get = (req, res, next) => {
   models.users.findAll({
@@ -130,7 +130,7 @@ exports.post = async (req, res, next) => {
     console.error(error);
     return res.status(500).send({
       success: false,
-      message: 'Oops.. An Error ocurred!',
+      message: 'Oops.. An Error Occurred!',
       data: null
     })
   }
@@ -152,7 +152,7 @@ exports.put = async (req, res, next) => {
     console.log(error);
     return res.status(500).send({
       success: false,
-      message: 'Oops.. An Error ocurred!',
+      message: 'Oops.. An Error Occurred!',
       data: null
     })
   }
@@ -174,7 +174,7 @@ exports.delete = async (req, res, next) => {
   } catch (error) {
     return res.status(500).send({
       success: false,
-      message: 'Oops.. An Error ocurred!',
+      message: 'Oops.. An Error Occurred!',
       data: null
     })
   }

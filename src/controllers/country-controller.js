@@ -1,6 +1,5 @@
 'use strict';
 const models = require('../models');
-const md5 = require('md5');
 
 exports.get = (req, res, next) => {
   models.countries.findAll()
@@ -14,7 +13,7 @@ exports.get = (req, res, next) => {
 };
 
 exports.getById = (req, res, next) => {
-  return models.countries.findById(req.params.id)
+   models.countries.findById(req.params.id)
     .then(function (countries) {
       res.send({
         success: true,

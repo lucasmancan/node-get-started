@@ -1,6 +1,5 @@
 'use strict';
 const models = require('../models');
-const md5 = require('md5');
 
 exports.get = (req, res, next) => {
   models.states.findAll()
