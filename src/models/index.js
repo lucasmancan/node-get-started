@@ -1,28 +1,10 @@
-
-const fs        = require('fs');
-const path      = require('path');
-const basename  = path.basename(__filename);
-const config    = require('../config');
+const fs = require('fs');
+const path = require('path');
+const basename = path.basename(__filename);
+const config = require('../config');
 var Sequelize = require('sequelize');
 
-
-// const sequelize = new Sequelize('api-db', 'soft360', 'App360soft', {
-//   host: 'grupopll.database.windows.net',
-//   dialect: 'mssql',
-//   dialectOptions: {
-//     encrypt: true
-//   }
-// });
-  
-// sequelize.authenticate()
-// .then(() => {
-//   console.log('Connection has been established successfully.');
-// })
-// .catch(err => {
-//   console.error('Unable to connect to the database:', err);
-// });
-
-const db  = {};
+const db = {};
 
 console.log("Variables: ", config.development.password);
 

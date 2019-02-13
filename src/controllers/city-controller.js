@@ -2,34 +2,34 @@
 const models = require('../models');
 
 exports.get = (req, res, next) => {
-  models.states.findAll()
-    .then(function (states) {
+  models.cities.findAll()
+    .then(function (cities) {
       res.send({
         success: true,
         message: '',
-        data: states
+        data: cities
       });
     })
 };
 
 exports.getById = (req, res, next) => {
-  models.states.findById(req.params.id)
-    .then(function (states) {
+  models.cities.findByPk(req.params.id)
+    .then(function (cities) {
       res.send({
         success: true,
         message: '',
-        data: states
+        data: cities
       });
     })
 };
 
-exports.getByCountry = (req, res, next) => {
-    models.states.findOne({where: {country_id: req.params.id}})
-      .then(function (states) {
+exports.getByState = (req, res, next) => {
+    models.cities.findOne({where: {state_id: req.params.id}})
+      .then(function (cities) {
         res.send({
           success: true,
           message: '',
-          data: states
+          data: cities
         });
       })
   };
@@ -37,39 +37,39 @@ exports.getByCountry = (req, res, next) => {
 
 
 exports.post = (req, res, next) => {
-  models.states.create(req.body)
+  models.cities.create(req.body)
     .then(function () {
       res.send({
         success: true,
-        message: 'State created',
+        message: 'City created',
         data: null
       });
     })
 };
 
 exports.put = (req, res, next) => {
-  models.states.update(req.body, {
+  models.cities.update(req.body, {
     where: {
       id: req.body.id
     }
   }).then(() => {
     res.status(200).send({
       success: true,
-      message: 'State updated!',
+      message: 'City updated!',
       data: null
     });
   });
 };
 
 exports.delete = (req, res, next) => {
-  models.states.destroy({
+  models.cities.destroy({
     where: {
       id: req.params.id
     }
   }).then(() => {
     res.status(200).send({
       success: true,
-      message: 'State deleted!',
+      message: 'City deleted!',
       data: null
     });
   });

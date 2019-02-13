@@ -8,7 +8,7 @@ const profileRoutes = require('./routes/profile-routes');
 const phoneRoutes = require('./routes/phone-routes');
 const countryRoutes = require('./routes/country-routes');
 const stateRoutes = require('./routes/state-routes');
-
+const cityRoutes = require('./routes/city-routes');
 const authRoutes = require('./routes/auth-routes');
 
 const cors = require('cors')
@@ -26,6 +26,8 @@ app.use('/profiles', profileRoutes);
 app.use('/auth', authRoutes);
 app.use('/countries', countryRoutes);
 app.use('/states', stateRoutes);
+app.use('/cities', cityRoutes);
+
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');

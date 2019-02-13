@@ -35,7 +35,7 @@ module.exports = (sequelize, Sequelize) => {
                 isDate: true
             },
             type: Sequelize.DATE,
-            allowNull: false
+            allowNull: true
         },
         email: {
             type: Sequelize.STRING(40),
@@ -47,7 +47,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         gender: {
             type: Sequelize.ENUM('M', 'F'),
-            allowNull: false
+            allowNull: true
         },
         active: {
             type: Sequelize.BOOLEAN,
@@ -78,7 +78,7 @@ module.exports = (sequelize, Sequelize) => {
 
     User.associate = function (models) {
         User.hasMany(models.phones);
-        User.hasMany(models.addresses);
+        User.belongsTo(models.addresses);
         User.belongsTo(models.profiles);
     };
 
