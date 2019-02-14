@@ -24,22 +24,26 @@ exports.getById = (req, res, next) => {
 };
 
 exports.getAllByIdUser = (req, res, next) => {
-    models.phones.findAll({where :{ user_id: req.params.userId}})
-      .then(function (phones) {
-        res.send({
-          success: true,
-          message: '',
-          data: phones
-        });
-      })
-  };
+  models.phones.findAll({
+      where: {
+        user_id: req.params.userId
+      }
+    })
+    .then(function (phones) {
+      res.send({
+        success: true,
+        message: '',
+        data: phones
+      });
+    })
+};
 
 exports.post = (req, res, next) => {
   models.phones.create(req.body)
     .then(function () {
       res.send({
         success: true,
-        message: 'E-mail created',
+        message: 'Phone created',
         data: null
       });
     })

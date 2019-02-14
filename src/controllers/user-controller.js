@@ -5,60 +5,27 @@ const repository = require('../repositories/user-repository');
 const email = require('../mail');
 const jwt = require('jsonwebtoken');
 
-exports.get = (req, res, next) => {
-  models.users.findAll({
-    include: [{
-        model: models.profiles,
-        required: true
-      }, {
-        model: models.addresses,
-        required: false,
-        include: {
-          model: models.states,
-          required: true,
-          include: {
-            model: models.countrys,
-            required: true
-          }
-        }
-      },
-      {
-        model: models.phones,
-        required: false
-      }
-    ]
-  }).then(function (users) {
-    res.send({
-      success: true,
-      message: '',
-      data: users
-    });
-  })
-};
-
 exports.getById = (req, res, next) => {
-  models.users.findByPk(req.params.id, {
+  models.users.findByPk(req.userId, {
     include: [{
-      model: models.profiles,
-      required: false
-    }, {
-      model: models.addresses,
-      required: false,
-      include: {
-        model: models.cities,
-        required: false,
-        include: {
-          model: models.states,
-          required: false,
-          include: {
-            model: models.countries,
-            required: false
-          }
-        }
-      }
-    }, {
       model: models.phones,
       required: false
+    },
+    {
+      model: models.address,
+      required: false,
+      include:[{
+        model: models.cities,
+        required: false,
+        include:[{
+          model: models.states,
+          required: false,
+          include:[{
+            model: models.countries,
+            required: false
+          }]
+        }]
+      }]
     }]
   }).then(function (users) {
     res.send({
@@ -68,8 +35,6 @@ exports.getById = (req, res, next) => {
     });
   })
 };
-
-
 
 exports.post = async (req, res, next) => {
   let User;
@@ -98,26 +63,6 @@ exports.post = async (req, res, next) => {
         active: true
       })
 
-
-      if (req.body.profile) {
-        User.profile = req.body.profile
-      }
-
-      if (req.body.phones && req.body.phones.length > 0) {
-        req.body.phones.forEach(element => {
-          element.user = User;
-          models.phones.create(element);
-        })
-      }
-
-      if (req.body.addresses && req.body.addresses.length > 0) {
-        req.body.addresses.forEach(element => {
-          element.user = User;
-          models.addresses.create(element);
-        })
-      }
-
-
       const id = User.id;
       const token = jwt.sign({
         id
@@ -136,10 +81,7 @@ exports.post = async (req, res, next) => {
         data: resp
       });
     });
-
-
   } catch (error) {
-
     console.error(error);
     return res.status(500).send({
       success: false,
@@ -152,9 +94,7 @@ exports.post = async (req, res, next) => {
 
 exports.put = async (req, res, next) => {
   try {
-
     await repository.update(req.body)
-
     return res.status(200).send({
       success: false,
       message: 'User updated!',
