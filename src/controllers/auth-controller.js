@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 
 exports.post = ((req, res, next) => {
-
+    console.log("Request Body: ", req);
     models.users.findOne({
         where: {
             email: req.body.email,

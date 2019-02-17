@@ -9,6 +9,10 @@ module.exports = (sequelize, Sequelize) => {
     street: {
       type: Sequelize.STRING(255),
       allowNull: false
+    },zipCode: {
+      field: 'zip_code',
+      type: Sequelize.STRING(255),
+      allowNull: false
     },
     number: {
       type: Sequelize.STRING(10),

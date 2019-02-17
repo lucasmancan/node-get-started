@@ -4,23 +4,25 @@ const md5 = require('md5');
 const repository = require('../repositories/user-repository');
 const email = require('../mail');
 const jwt = require('jsonwebtoken');
+const config = require('../config');
+const azure = require('azure-storage');
+
 
 exports.getById = (req, res, next) => {
   models.users.findByPk(req.userId, {
     include: [{
       model: models.phones,
       required: false
-    },
-    {
-      model: models.address,
+    }, {
+      model: models.addresses,
       required: false,
-      include:[{
+      include: [{
         model: models.cities,
         required: false,
-        include:[{
+        include: [{
           model: models.states,
           required: false,
-          include:[{
+          include: [{
             model: models.countries,
             required: false
           }]
@@ -59,6 +61,8 @@ exports.post = async (req, res, next) => {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
+        coverImage:"https://lfmsyssotrage.blob.core.windows.net/cover-images/default.jpg",
+        profileImage:"https://lfmsyssotrage.blob.core.windows.net/profile-images/default.jpg",
         password: md5(req.body.password + global.API_KEY),
         active: true
       })
@@ -83,6 +87,7 @@ exports.post = async (req, res, next) => {
     });
   } catch (error) {
     console.error(error);
+    console.log("Erro ao upar imagem: ", error);
     return res.status(500).send({
       success: false,
       message: 'Oops.. An Error Occurred!',
@@ -92,11 +97,104 @@ exports.post = async (req, res, next) => {
 
 };
 
+exports.updateProfileImage = async (req, res, next) => {
+  try {
+    // Cria o Blob Service
+    const blobSvc = azure.createBlobService(config.development.storage);
+
+    let filename = req.params.id + new Date().getMilliseconds() +'.jpg';
+    let profileImage = req.body.profileImage;
+
+    // let matches = profileImage.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+    // let type = matches[1];
+    let buffer = new Buffer(profileImage, 'base64');
+
+    // Salva a imagem
+    await blobSvc.createBlockBlobFromText('profile-images', filename, buffer, {
+      contentType: "image/jpeg"
+    }, function (error, result, response) {
+      if (error) {
+        filename = 'default-image.png'
+      }
+    });
+
+
+    models.users.update({
+      profileImage: 'https://lfmsyssotrage.blob.core.windows.net/profile-images/' + filename
+    }, {
+      where: {
+        id: req.params.id
+      }
+    });
+
+    return res.status(200).send({
+      success: true,
+      message: 'Profile Picture Updated!',
+      data: null
+    });
+  } catch (error) {
+    console.log("Erro ao upar imagem: ", error);
+    return res.status(500).send({
+      success: false,
+      message: 'Oops.. An Error Occurred!',
+      data: null
+    })
+  }
+}
+
+
+exports.updateCoverImage = async (req, res, next) => {
+  try {
+    // Cria o Blob Service
+    const blobSvc = azure.createBlobService(config.development.storage);
+
+    let filename = req.params.id + new Date().getMilliseconds() +'.jpg';
+    let coverImage = req.body.coverImage;
+
+    // let matches = profileImage.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+    // let type = matches[1];
+    let buffer = new Buffer(coverImage, 'base64');
+
+    // Salva a imagem
+    await blobSvc.createBlockBlobFromText('cover-images', filename, buffer, {
+      contentType: "image/jpeg"
+    }, function (error, result, response) {
+      if (error) {
+        filename = 'default-image.png'
+      }
+    });
+
+    models.users.update({
+      coverImage: 'https://lfmsyssotrage.blob.core.windows.net/cover-images/' + filename
+    }, {
+      where: {
+        id: req.params.id
+      }
+    });
+
+    return res.status(200).send({
+      success: true,
+      message: 'Cover Picture Updated!',
+      data: null
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: 'Oops.. An Error Occurred!',
+      data: null
+    })
+  }
+}
+
+
+
 exports.put = async (req, res, next) => {
   try {
+
     await repository.update(req.body)
     return res.status(200).send({
-      success: false,
+      success: true,
       message: 'User updated!',
       data: null
     });

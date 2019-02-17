@@ -11,6 +11,16 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         },
+        profileImage: {
+            field: 'profile_image',
+            type: Sequelize.STRING,
+            allowNull: true
+        },
+        coverImage: {
+            field: 'cover_image',
+            type: Sequelize.STRING,
+            allowNull: true
+        },
         lastName: {
             field: 'last_name',
             type: Sequelize.STRING,

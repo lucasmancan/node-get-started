@@ -10,15 +10,16 @@ const countryRoutes = require('./routes/country-routes');
 const stateRoutes = require('./routes/state-routes');
 const cityRoutes = require('./routes/city-routes');
 const authRoutes = require('./routes/auth-routes');
-
+const addressRoutes = require('./routes/address-routes');
 const cors = require('cors')
 
 const app = express();
 
 app.use(cors({credentials: true, origin: true}))
-app.use(bodyParser.json());
+app.use(bodyParser({limit: '4MB'}))
 app.use(bodyParser.urlencoded({extended:false}));
-
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
 app.use('/', indexRoutes);
 app.use('/users', userRoutes);
 app.use('/phones', phoneRoutes);
@@ -27,6 +28,8 @@ app.use('/auth', authRoutes);
 app.use('/countries', countryRoutes);
 app.use('/states', stateRoutes);
 app.use('/cities', cityRoutes);
+app.use('/addresses', addressRoutes);
+
 
 
 app.use(function (req, res, next) {

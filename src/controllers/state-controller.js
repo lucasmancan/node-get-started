@@ -24,7 +24,8 @@ exports.getById = (req, res, next) => {
 };
 
 exports.getByCountry = (req, res, next) => {
-    models.states.findOne({where: {country_id: req.params.id}})
+  console.log("Country: ", req.params.id);
+    models.states.findAll({where: {country_id: req.params.id}})
       .then(function (states) {
         res.send({
           success: true,
